@@ -7,13 +7,20 @@ def index():
     result = ""
     if request.method == "POST":
         try:
-            # Get the input from the form
             calculation = request.form["calculation"]
-            # Evaluate the expression and calculate the result
             result = eval(calculation)
         except Exception as e:
             result = "Error: " + str(e)
     return render_template("index.html", result=result)
+
+@app.route("/calculate", methods=["GET"])
+def calculate():
+    expression = request.args.get("expression", "")
+    try:
+        result = str(eval(expression))
+    except Exception as e:
+        result = "Error"
+    return result
 
 if __name__ == "__main__":
     app.run(debug=True)
