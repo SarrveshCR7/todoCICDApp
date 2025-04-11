@@ -1,17 +1,19 @@
-from flask import Flask, request
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-# Add a route for calculating
-@app.route('/calculate')
-def calculate():
-    expression = request.args.get('expression')
-    try:
-        # Evaluate the expression safely
-        result = str(eval(expression))  # Make sure to sanitize input in production!
-    except Exception as e:
-        result = str(e)
-    return result
+@app.route("/", methods=["GET", "POST"])
+def index():
+    result = ""
+    if request.method == "POST":
+        try:
+            # Get the input from the form
+            calculation = request.form["calculation"]
+            # Evaluate the expression and calculate the result
+            result = eval(calculation)
+        except Exception as e:
+            result = "Error: " + str(e)
+    return render_template("index.html", result=result)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
