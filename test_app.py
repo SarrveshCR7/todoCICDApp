@@ -2,7 +2,11 @@ import pytest
 from app import app
 
 def test_addition():
-    assert app.calculate("2+2") == "4"
+    with app.test_client() as client:
+        response = client.get('/calculate?expression=2+2')
+        assert response.data.decode() == '4'
 
 def test_subtraction():
-    assert app.calculate("5-3") == "2"
+    with app.test_client() as client:
+        response = client.get('/calculate?expression=5-3')
+        assert response.data.decode() == '2'
