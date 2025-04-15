@@ -9,18 +9,19 @@ def index():
         try:
             calculation = request.form["calculation"]
             result = eval(calculation)
-        except Exception as e:
-            result = "Error: " + str(e)
+        except Exception:
+            result = "Invalid input. Please enter a valid mathematical expression."
     return render_template("index.html", result=result)
 
-@app.route("/calculate", methods=["GET"])
+@app.route("/calculate")
 def calculate():
     expression = request.args.get("expression", "")
+    user_answer = request.args.get("answer", "")
     try:
-        result = str(eval(expression))
-    except Exception as e:
-        result = "Error"
-    return result
-
-if __name__ == "__main__":
-    app.run(debug=True)
+        actual_answer = str(eval(expression))
+        if user_answer == actual_answer:
+            return "Correct"
+        else:
+            return f"Incorrect. The correct answer is: {actual_answer}"
+    except Exception:
+        return "Invalid input. Please enter a valid mathematical expression."
