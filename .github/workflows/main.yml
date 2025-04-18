@@ -27,3 +27,12 @@ jobs:
     - name: Run tests
       run: |
         pytest
+
+    - name: Deploy to Vercel
+      run: |
+        npm install -g vercel
+        vercel --prod --token=$VERCEL_TOKEN --confirm --scope=$VERCEL_ORG_ID --project=$VERCEL_PROJECT_ID
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
